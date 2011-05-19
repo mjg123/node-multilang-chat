@@ -3,7 +3,7 @@ var https = require('https');
 var url = require('url');
 var qs = require('querystring');
 
-var messages = { "en":[], "es":[] };
+var messages = { "en":[], "es":[], "ja":[], "fr":[] };
 
 http.createServer(function (req, res) {
 
@@ -14,29 +14,37 @@ http.createServer(function (req, res) {
   if ( urlParams.msg ) {
     messages[msgLang].push( urlParams );
 
-    var targetLang = ( msgLang === "en" ? "es" : "en" );
+    for ( lang in messages ){
+      if ( messages.hasOwnProperty(lang) && lang !== msgLang ){
 
-    var translateUrl = "/language/translate/v2?" +
-                       "key=AIzaSyDQvD2F99tMbspU6aA6-WWFQ1nZ1Ote0eA&"+
-                       "source=" + msgLang + "&" +
-                       "target=" + targetLang + "&" +
-                       "q=" + qs.escape(urlParams.msg);
+        var f = function (l){
+      
+        var translateUrl = "/language/translate/v2?" +
+                           "key=AIzaSyDQvD2F99tMbspU6aA6-WWFQ1nZ1Ote0eA&"+
+                           "source=" + msgLang + "&" +
+                           "target=" + l + "&" +
+                           "q=" + qs.escape(urlParams.msg);
 
-    https.get( { host: "www.googleapis.com", 
+        https.get( { host: "www.googleapis.com",
                  path: translateUrl },
                function ( res ){
-                  res.on( 'data', function(d){ 
+                  res.on( 'data', function(d){
                     var translation = JSON.parse(d);
                     var transMsg = translation.data.translations[0].translatedText;
                     var otherMsg = { "name" : urlParams.name, "msg": transMsg }
-                    messages[targetLang].push( otherMsg );
+                    messages[l].push( otherMsg );
                 } );
                }
              );
+         }(lang);
 
+
+
+      }
+    }
   }
 
-  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.writeHead(200, {'Content-Type': 'text/plain; charset=UTF-8'});
   res.end( (messages[msgLang]||[]).map( function(x){ return "[" + (x.name||"anonymous") + "] " + x.msg; } ).join(",\n") );
 
 

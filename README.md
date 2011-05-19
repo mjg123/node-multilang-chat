@@ -8,4 +8,6 @@ then
 
 http://localhost:1337?lang=es
 
-should give you the idea.  Only supports `en` and `es` as languages at the moment.
+should give you the idea.
+
+Supports `en`, `es`, `fr`, `ja` at the moment.
