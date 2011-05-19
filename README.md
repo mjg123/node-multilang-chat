@@ -10,4 +10,4 @@ http://localhost:1337?lang=es
 
 should give you the idea.
 
-Supports `en`, `es`, `fr`, `ja` at the moment.
+Supports `en`, `es`, `fr`, `ja` at the moment.  Full list of supported languages is at http://code.google.com/apis/language/translate/v2/using_rest.html#language-params, you just have to add any that you want to the array at the top.
