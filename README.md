@@ -7,6 +7,8 @@ http://localhost:1337?name=Matthew&lang=en&msg=Hello+World
 then
 
 http://localhost:1337?lang=es
+http://localhost:1337?lang=fr
+http://localhost:1337?lang=ja
 
 should give you the idea.
 
